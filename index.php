@@ -1,6 +1,5 @@
 <?php
 // BizDash progress 1: Project skeleton and rough static page.
-// This is a study snapshot, so earlier stages are intentionally unfinished.
 ?>
 <!doctype html>
 <html lang="en">
