@@ -1,17 +1,17 @@
 <?php
-// BizDash progress 1: Project skeleton and rough static page.
+// Login API and session handling.
 ?>
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BizDash Progress 1</title>
+  <title>BizDash Progress 3</title>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
   <div id="app"></div>
-  <script>window.BD_STAGE = 1;</script>
+  <script>window.BD_STAGE = 3;</script>
   <script src="assets/js/app.js"></script>
 </body>
 </html>
