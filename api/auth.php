@@ -11,12 +11,6 @@ if ($method === 'GET') {
     ]);
 }
 
-if ($method === 'DELETE' || ($method === 'POST' && ($_GET['action'] ?? '') === 'logout')) {
-    $_SESSION = [];
-    session_destroy();
-    send_json(['ok' => true, 'message' => 'Logged out.']);
-}
-
 if ($method === 'POST') {
     $data = json_input();
     $username = clean_text($data['username'] ?? '');
@@ -26,7 +20,6 @@ if ($method === 'POST') {
         fail('Username and password are required.');
     }
 
-    // Prepared statements keep the login query safe from SQL injection.
     $stmt = db()->prepare(
         "SELECT user_id, full_name, username, password, role, status
          FROM users
@@ -47,11 +40,5 @@ if ($method === 'POST') {
         'role' => $user['role'],
     ];
 
-    send_json([
-        'ok' => true,
-        'message' => 'Login successful.',
-        'user' => $_SESSION['user'],
-    ]);
+    send_json(['ok' => true, 'user' => $_SESSION['user']]);
 }
-
-fail('Unsupported request method.', 405);
