@@ -1,17 +1,18 @@
 <?php
-// Login API and session handling.
+// BizDash progress 4: Dashboard data API.
+// This is a study snapshot, so earlier stages are intentionally unfinished.
 ?>
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BizDash Progress 3</title>
+  <title>BizDash Progress 4</title>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
   <div id="app"></div>
-  <script>window.BD_STAGE = 3;</script>
+  <script>window.BD_STAGE = 4;</script>
   <script src="assets/js/app.js"></script>
 </body>
 </html>
