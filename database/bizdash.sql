@@ -2,11 +2,11 @@
 -- Import this file in phpMyAdmin or with:
 -- mysql -u root -p < database/bizdash.sql
 
-CREATE DATABASE IF NOT EXISTS bizdash_progress_6
+CREATE DATABASE IF NOT EXISTS bizdash_progress_7
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_general_ci;
 
-USE bizdash_progress_6;
+USE bizdash_progress_7;
 
 DROP TABLE IF EXISTS inventory_logs;
 DROP TABLE IF EXISTS sales_items;
