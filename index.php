@@ -1,5 +1,5 @@
 <?php
-// BizDash progress 7: Sales cart and stock deduction.
+// BizDash progress 8: Reports and date filtering.
 // This is a study snapshot, so earlier stages are intentionally unfinished.
 ?>
 <!doctype html>
@@ -7,12 +7,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BizDash Progress 7</title>
+  <title>BizDash Progress 8</title>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
   <div id="app"></div>
-  <script>window.BD_STAGE = 7;</script>
+  <script>window.BD_STAGE = 8;</script>
   <script src="assets/js/app.js"></script>
 </body>
 </html>

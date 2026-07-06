@@ -15,7 +15,7 @@ session_start();
 
 define('DB_HOST', getenv('BIZDASH_DB_HOST') ?: 'localhost');
 define('DB_PORT', getenv('BIZDASH_DB_PORT') ?: '');
-define('DB_NAME', 'bizdash_progress_7');
+define('DB_NAME', 'bizdash_progress_8');
 define('DB_USER', getenv('BIZDASH_DB_USER') ?: 'root');
 define('DB_PASS', getenv('BIZDASH_DB_PASS') ?: '');
 
