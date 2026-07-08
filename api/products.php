@@ -3,26 +3,48 @@ require __DIR__ . '/config.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
+
+/*
+ * Products Module
+ * Status: Under Development
+ *
+ * Completed:
+ * - Database connection
+ * - Product listing
+ *
+ * Pending:
+ * - Add product feature
+ * - Edit product feature
+ * - Delete/deactivate product
+ * - Image upload
+ * - Inventory synchronization
+ */
+
+
 if ($method === 'GET') {
+
     require_login();
 
     $search = '%' . clean_text($_GET['search'] ?? '') . '%';
-    $status = clean_text($_GET['status'] ?? 'active');
 
-    $sql = "SELECT p.*, c.category_name
-            FROM products p
-            LEFT JOIN categories c ON c.category_id = p.category_id
-            WHERE (p.product_name LIKE ? OR c.category_name LIKE ?)";
-    $params = [$search, $search];
 
-    if ($status !== 'all') {
-        $sql .= " AND p.status = ?";
-        $params[] = $status;
-    }
+    $stmt = db()->prepare(
+        "SELECT p.product_id,
+                p.product_name,
+                p.cost_price,
+                p.selling_price,
+                p.stock_quantity,
+                p.status,
+                c.category_name
+         FROM products p
+         LEFT JOIN categories c
+         ON c.category_id = p.category_id
+         WHERE p.product_name LIKE ?
+         ORDER BY p.product_name"
+    );
 
-    $sql .= " ORDER BY p.product_name";
-    $stmt = db()->prepare($sql);
-    $stmt->execute($params);
+    $stmt->execute([$search]);
+
 
     $categories = db()->query(
         "SELECT category_id, category_name
@@ -30,125 +52,85 @@ if ($method === 'GET') {
          ORDER BY category_name"
     )->fetchAll();
 
+
     send_json([
         'ok' => true,
         'products' => $stmt->fetchAll(),
         'categories' => $categories,
+
+        'message' => 'Product listing completed. Other functions are still under development.'
     ]);
 }
+
+
 
 if ($method === 'POST') {
-    $user = require_admin();
+
+    require_admin();
+
     $data = json_input();
 
-    $name = clean_text($data['product_name'] ?? '');
-    $categoryId = (int) ($data['category_id'] ?? 0);
-    $description = clean_text($data['description'] ?? '');
-    $costPrice = money_value($data['cost_price'] ?? 0);
-    $sellingPrice = money_value($data['selling_price'] ?? 0);
-    $stock = (int) ($data['stock_quantity'] ?? 0);
-    $lowStockLevel = (int) ($data['low_stock_level'] ?? 10);
-    $image = clean_text($data['product_image'] ?? '');
 
-    if ($name === '' || $costPrice < 0 || $sellingPrice < 0 || $stock < 0) {
-        fail('Please enter a valid product name, prices, and stock quantity.');
-    }
+    /*
+     * TODO:
+     * - Validate product fields
+     * - Insert new product
+     * - Add inventory log
+     * - Support product images
+     */
 
-    $pdo = db();
-    $pdo->beginTransaction();
 
-    try {
-        $stmt = $pdo->prepare(
-            "INSERT INTO products
-                (category_id, product_name, description, cost_price, selling_price,
-                 stock_quantity, low_stock_level, product_image, status)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'active')"
-        );
-        $stmt->execute([
-            $categoryId ?: null,
-            $name,
-            $description,
-            $costPrice,
-            $sellingPrice,
-            $stock,
-            max(0, $lowStockLevel),
-            $image,
-        ]);
-
-        $productId = (int) $pdo->lastInsertId();
-
-        // When a product starts with stock, record it in the inventory log.
-        if ($stock > 0) {
-            $log = $pdo->prepare(
-                "INSERT INTO inventory_logs
-                    (product_id, action_type, quantity_changed, previous_stock, new_stock, remarks, updated_by)
-                 VALUES (?, 'adjustment', ?, 0, ?, 'Initial product stock', ?)"
-            );
-            $log->execute([$productId, $stock, $stock, $user['user_id']]);
-        }
-
-        $pdo->commit();
-        send_json(['ok' => true, 'message' => 'Product added.']);
-    } catch (Throwable $e) {
-        $pdo->rollBack();
-        fail('Unable to add product: ' . $e->getMessage(), 500);
-    }
+    send_json([
+        'ok' => false,
+        'message' => 'Adding products is not finished yet.'
+    ]);
 }
+
+
 
 if ($method === 'PUT') {
+
     require_admin();
+
     $data = json_input();
 
-    $id = (int) ($data['product_id'] ?? 0);
-    $name = clean_text($data['product_name'] ?? '');
-    $categoryId = (int) ($data['category_id'] ?? 0);
-    $description = clean_text($data['description'] ?? '');
-    $costPrice = money_value($data['cost_price'] ?? 0);
-    $sellingPrice = money_value($data['selling_price'] ?? 0);
-    $lowStockLevel = (int) ($data['low_stock_level'] ?? 10);
-    $image = clean_text($data['product_image'] ?? '');
-    $status = clean_text($data['status'] ?? 'active');
 
-    if ($id <= 0 || $name === '' || !in_array($status, ['active', 'inactive'], true)) {
-        fail('Valid product information is required.');
-    }
+    /*
+     * TODO:
+     * - Update product information
+     * - Update prices
+     * - Update stock level
+     */
 
-    $stmt = db()->prepare(
-        "UPDATE products
-         SET category_id = ?, product_name = ?, description = ?, cost_price = ?,
-             selling_price = ?, low_stock_level = ?, product_image = ?, status = ?
-         WHERE product_id = ?"
-    );
-    $stmt->execute([
-        $categoryId ?: null,
-        $name,
-        $description,
-        $costPrice,
-        $sellingPrice,
-        max(0, $lowStockLevel),
-        $image,
-        $status,
-        $id,
+
+    send_json([
+        'ok' => false,
+        'message' => 'Product editing is still under development.'
     ]);
-
-    send_json(['ok' => true, 'message' => 'Product updated.']);
 }
+
+
 
 if ($method === 'DELETE') {
+
     require_admin();
-    $data = json_input();
-    $id = (int) ($data['product_id'] ?? 0);
 
-    if ($id <= 0) {
-        fail('Product ID is required.');
-    }
 
-    // Deactivate instead of hard deleting so old sales records stay readable.
-    $stmt = db()->prepare("UPDATE products SET status = 'inactive' WHERE product_id = ?");
-    $stmt->execute([$id]);
+    /*
+     * TODO:
+     * - Implement product deactivation
+     * - Keep sales records protected
+     */
 
-    send_json(['ok' => true, 'message' => 'Product deactivated.']);
+
+    send_json([
+        'ok' => false,
+        'message' => 'Product deletion feature is not completed.'
+    ]);
 }
+
+
 
 fail('Unsupported request method.', 405);
 
+?>
