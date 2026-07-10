@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120" viewBox="0 0 320 120" role="img" aria-label="BizDash logo placeholder">
+  <rect width="320" height="120" rx="24" fill="#014421"/>
+  <circle cx="58" cy="60" r="34" fill="#F4C430"/>
+  <path d="M42 73V47h21c11 0 18 5 18 13s-7 13-18 13H42Zm18-16h-6v6h6c5 0 8-1 8-3s-3-3-8-3Z" fill="#014421"/>
+  <text x="108" y="55" font-family="Poppins, Arial, sans-serif" font-size="28" font-weight="800" fill="#FFFFFF">BizDash</text>
+  <text x="110" y="82" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="600" fill="#DDEFE6">Replace with your logo</text>
+</svg>
+

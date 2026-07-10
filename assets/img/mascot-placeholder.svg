@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="280" viewBox="0 0 280 280" role="img" aria-label="BizDash mascot placeholder">
+  <rect width="280" height="280" rx="34" fill="#F8FAFC"/>
+  <circle cx="140" cy="112" r="58" fill="#006B3F"/>
+  <circle cx="118" cy="104" r="8" fill="#FFFFFF"/>
+  <circle cx="162" cy="104" r="8" fill="#FFFFFF"/>
+  <path d="M112 138c17 16 39 16 56 0" fill="none" stroke="#F4C430" stroke-width="10" stroke-linecap="round"/>
+  <rect x="70" y="178" width="140" height="56" rx="18" fill="#014421"/>
+  <path d="M98 204h84" stroke="#F4C430" stroke-width="10" stroke-linecap="round"/>
+  <text x="140" y="258" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#1F2937">Mascot placeholder</text>
+</svg>
+
